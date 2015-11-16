@@ -1,18 +1,22 @@
 // Variables y Objetos globales.
 var v_mapa = null
 var v_array_puntos = new Array();
+var v_max_zoom = 14;				// Zoom maximo.
+var v_min_zoom = 5;					// Zoom minimo.
 
 function cargarMapa() {
 	// Asuncion - Paraguay.
 	var v_longitud = -57.6309129;
 	var v_latitud = -25.2961407;
-	var v_zoom = 6;
+	var v_zoom = v_min_zoom;
 
 	// Mapbox.
 	L.mapbox.accessToken =
 		'pk.eyJ1IjoidGNxbCIsImEiOiJaSlZ6X3JZIn0.mPwXgf3BvAR4dPuBB3ypfA';
-	v_mapa = L.mapbox.map('mapa', 'mapbox.streets').setView([v_latitud, v_longitud],
-		v_zoom);
+	v_mapa = L.mapbox.map('mapa', 'mapbox.streets', {
+    	maxZoom: v_max_zoom,
+    	minZoom: v_min_zoom
+	}).setView([v_latitud, v_longitud], v_zoom);
 
 	// Lamada ajax elavizor usando su api.
 	$.ajax({
@@ -50,11 +54,7 @@ function cargarMapa() {
 				     v_array_puntos[v_indice_punto][2] = v_array_puntos[v_indice_punto][2] + 1;
 				}
 			}
-
-
-
 			// Guardar en un array todos los puntos.
-			//var v_array_puntos = new Array();
 			var v_reportes = p_data.payload.incidents;
 			for (var v_indice in v_reportes) {
 				var v_reporte = v_reportes[v_indice];
@@ -62,13 +62,7 @@ function cargarMapa() {
 			}
 			// Mapa de calor.
 			var heat = L.heatLayer(v_array_puntos, {
-				maxZoom: 11,
-				//radius: 25,
-				// gradient: {
-				// 	0.4: 'blue',
-				// 	0.65: 'lime',
-				// 	1: 'red'
-				// }
+				maxZoom: v_max_zoom
 			}).addTo(v_mapa);
 		}
 	});
