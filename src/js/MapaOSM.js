@@ -13,7 +13,7 @@ function cargarMapa() {
 	// Mapbox.
 	L.mapbox.accessToken =
 		'pk.eyJ1IjoidGNxbCIsImEiOiJaSlZ6X3JZIn0.mPwXgf3BvAR4dPuBB3ypfA';
-	v_mapa = L.mapbox.map('mapa', 'mapbox.streets', {
+	v_mapa = L.mapbox.map('map-container', 'mapbox.streets', {
     	maxZoom: v_max_zoom,
     	minZoom: v_min_zoom
 	}).setView([v_latitud, v_longitud], v_zoom);
