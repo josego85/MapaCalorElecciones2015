@@ -1,6 +1,7 @@
 // Variables y Objetos globales.
 var v_mapa = null
-var v_array_puntos = new Array();
+var v_array_puntos = new Array();	// Se guardan todos los puntos para mostrar
+									// en el mapa de calor.
 var v_max_zoom = 14;				// Zoom maximo.
 var v_min_zoom = 5;					// Zoom minimo.
 
@@ -10,13 +11,22 @@ function cargarMapa() {
 	var v_latitud = -25.2961407;
 	var v_zoom = v_min_zoom;
 
+	//Limite del area de Paraguay.
+	var v_southWest = L.latLng(-28.000, -62.999);
+    var v_northEast = L.latLng(-18.900, -53.900);
+    var v_bounds = L.latLngBounds(v_southWest, v_northEast);
+
 	// Mapbox.
 	L.mapbox.accessToken =
 		'pk.eyJ1IjoidGNxbCIsImEiOiJaSlZ6X3JZIn0.mPwXgf3BvAR4dPuBB3ypfA';
 	v_mapa = L.mapbox.map('map-container', 'mapbox.streets', {
+		maxBounds: v_bounds,
     	maxZoom: v_max_zoom,
     	minZoom: v_min_zoom
-	}).setView([v_latitud, v_longitud], v_zoom);
+	});
+
+	// El zoom exacto con los v_bounds.
+	v_mapa.fitBounds(v_bounds);
 
 	// Lamada ajax elavizor usando su api.
 	$.ajax({
